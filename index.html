@@ -171,7 +171,7 @@
         <h1>나만의 힐링유형 찾기</h1>    
         <p class="subtitle">나에게 딱 맞는 휴식 유형은?</p>    
         <div class="result-illustration-placeholder">    
-            🎉    
+            🍀    
         </div>    
         <button onclick="startQuiz()">테스트 시작하기</button>    
     </div>    
@@ -198,8 +198,8 @@
     
         <hr>    
     
-        <button id="gift-btn" class="gift-btn" onclick="goToGift()">🎁 구독하고 맞춤형 힐링 받기</button>     
-        <button id="subscribe-btn" class="subscribe-btn" onclick="goToSubscribe()">💌 내 스타일 선물받기</button>    
+        <button id="gift-btn" class="gift-btn" onclick="goToGift()">💌 구독하고 맞춤형 힐링 받기</button>     
+        <button id="subscribe-btn" class="subscribe-btn" onclick="goToSubscribe()">🎁 내 스타일 선물받기</button>    
         <button id="share-btn" class="secondary-btn" onclick="shareResult()">👯 친구랑 같이 해보기</button>    
             
         <hr>    
@@ -216,39 +216,39 @@
                 { text: "밀린 집안일이랑 정리부터 하자!", type: 'C' },    
                 { text: "모처럼 스피커 틀고 커피도 내려볼까~", type: 'D' }    
             ] },    
-            { q: "스트레스 해소엔 이게 최고!",     
+            { q: "스트레스 받으면 어떻게 풀까?",     
             options: [    
-                { text: "일단 무음모드! 혼자만의 시간이 필요해", type: 'A' },    
+                { text: "당분간 무음모드! 혼자만의 시간이 필요해", type: 'A' },    
                 { text: "친구랑 당장 만나서 시원하게 털어놓아야지!", type: 'B' },    
-                { text: "일단 마음이 불안한 이유를 적어보자...", type: 'C' },    
-                { text: "일단 배민 켜고 욕조에 러쉬밤부터 풀어보자", type: 'D' }    
+                { text: "차분히 마음이 불안한 이유를 적어보자...", type: 'C' },    
+                { text: "냅다 배민 켜고 러쉬밤부터 풀어보자", type: 'D' }    
             ] },    
             { q: "일주일의 휴가가 주어진다면, 어디로 가볼까?",     
             options: [    
                 { text: "무조건 집!! 유튜브로 떠나는 여행이 최고지", type: 'A' },    
                 { text: "포르투갈? 스페인? 아 어디부터 가지?", type: 'B' },    
                 { text: "일단 계획을 세워보자... 예산이 얼마더라...", type: 'C' },    
-                { text: "신상맛집 느좋카페 팝업까지 풀코스 고!", type: 'D' }    
+                { text: "외곽으로 신상맛집 느좋카페 팝업까지 풀코스 고!", type: 'D' }    
             ] },    
             { q: "친구가 '너답지 않아'라고 말할 때는 언제일까?",     
             options: [    
                 { text: "며칠째 카톡 답장이 없을 때", type: 'A' },    
                 { text: "갑자기 집순이가 되었을 때", type: 'B' },    
                 { text: "엑셀로 계획 안 세우고 여행 갈 때", type: 'C' },    
-                { text: "가성비 때문에 먹고 싶은 걸 참을 때", type: 'D' }    
+                { text: "가성비 고려하느라 먹고 싶은 걸 참을 때", type: 'D' }    
             ] },    
             { q: "나만의 힐링공간을 만들어보자! 어떻게 꾸밀까?",     
             options: [    
                 { text: "암막커튼부터 사야지 어두운 게 최고!", type: 'A' },    
-                { text: "당장 떠날 수 있는 캐리어 들여놓기", type: 'B' },    
+                { text: "당장 떠날 수 있는 캐리어부터 들여놓자!", type: 'B' },    
                 { text: "일단 집부터 싹~ 정리하고 책도 읽어보자!", type: 'C' },    
-                { text: "마샬스피커, 인센스, 캔들, 조명, 디퓨저, 폭신한 이불, 느좋인 건 다 들여야지", type: 'D' }    
+                { text: "마샬스피커, 인센스, 캔들, 조명, 디퓨저, 폭닥한 이불, 느좋인 건 다 들여야지", type: 'D' }    
             ] },    
             { q: "상상만 해도 가장 힘든 순간은?",     
             options: [    
                 { text: "모임에서 모르는 사람들이랑 하루종일 대화하는 것", type: 'A' },    
-                { text: "30분 단위 계획표대로 생활하기", type: 'B' },    
-                { text: "누구와도 연락하지 않고 혼자 집에 있는 것이", type: 'C' },    
+                { text: "30분 단위 계획표대로 생활하는 것", type: 'B' },    
+                { text: "누구와도 연락하지 않고 혼자 집에 있는 것", type: 'C' },    
                 { text: "미리 맛집 안 알아보고 아무데나 들어갔는데 맛 없는 곳이었던 것", type: 'D' }    
             ] }    
         ];    
@@ -256,7 +256,7 @@
         const results = {    
             'A': {     
                 name: "🛌 매일 누워있고 싶어!<br><span class=\"purple-text\">&lt;이불 돌돌말이&gt;</span>",     
-                description: "축하합니다! 햅삐님은 이불과 침대만으로 행복을 누리는 법을 알고 계시군요! 햅삐님의 행복은 외부의 자극을 피해 혼자만의 여유를 가지는 것으로부터 시작됩니다.<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
+                description: "축하합니다! 햅삐님은 집에서도 충분히 행복을 누리는 법을 알고 계시군요! 햅삐님의 행복은 외부의 자극을 피해 혼자만의 여유를 가지는 것으로부터 시작됩니다.<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🛌',    
                 curation: []     
             },    
@@ -274,7 +274,7 @@
             },    
             'D': {     
                 name: "✨ 호기심 풀충<br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>",     
-                description: "햅삐님은 팝업스토어, 신상맛집을 다녀오고 직접 경험하는 데서 큰 즐거움을 느끼시는군요! 햅씨와 매우 비슷한 스타일!!(같이 에디터 하실래요?ㅎㅎ)<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
+                description: "햅삐님은 팝업스토어, 신상맛집을 다녀오고 직접 경험하는 데서 큰 즐거움을 느끼시는군요! 햅씨와 매우 비슷한 스타일!!(에디터로 탐나는 인재군요ㅎㅎ)<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🎧',    
                 curation: []    
             }    
