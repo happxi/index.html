@@ -273,7 +273,7 @@
                 curation: []    
             },    
             'D': {     
-                name: "✨ 트렌드 수집가<br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>", 
+                name: "✨ 트렌드 스캐너<br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>", 
                 description: "햅삐님은 팝업스토어, 신상맛집을 다녀오고 직접 경험하는 데서 큰 즐거움을 느끼시는군요! 햅씨와 매우 비슷한 스타일!!(에디터로 탐나는 인재군요ㅎㅎ)<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🎧',    
                 curation: []    
@@ -405,22 +405,27 @@
                 });
         }
 
-        // 🟢 최종 공유 기능 (인앱 탈출 로직 및 Web Share API 우선) 🟢
+        // 🟢 최종 공유 기능 (별명만 추출하도록 로직 변경 및 인앱 탈출 로직 포함) 🟢
         function shareResult() {    
             const resultKey = determineResult();    
-            // HTML 태그 제거 및 결과 이름 정리
-            const plainResultName = results[resultKey].name
-                .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-                .replace(/<br>/g, ' ')
-                .replace(/<[^>]*>/g, '')
-                .trim();
+            
+            // 🚩 수정: results[resultKey].name에서 '<'와 '>'로 감싸진 별명만 추출
+            const resultNameHtml = results[resultKey].name;
+            
+            // 정규 표현식을 사용하여 '&lt;'와 '&gt;'로 감싸진 텍스트 (&lt;별명&gt;)만 추출합니다.
+            const match = resultNameHtml.match(/&lt;([^&]+)&gt;/);
+            let nickname = "자휴찾기 유형"; // 기본값
+            if (match && match[1]) {
+                // 매치된 별명 (예: '이불 돌돌말이')을 가져옵니다.
+                nickname = match[1]; 
+            }
                 
             // 🟢 사용자의 실제 Vercel 주소 반영 완료 🟢
             const shareURL = "https://index-html-zak5.vercel.app/"; 
             
-            // 공유할 문구
-            const shareText = `저는 ${plainResultName}입니다!😆\n당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요!`;    
-
+            // 공유할 문구: 별명만 사용합니다.
+            const shareText = `저는 <${nickname}>입니다!😆\n당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요!`;    
+            
             // --- 1. 인앱 브라우저 체크 및 탈출 로직 (카톡 인앱 문제 해결) ---
             const isKakaoInApp = navigator.userAgent.includes('KAKAOTALK');
             
