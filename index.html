@@ -8,8 +8,7 @@
     <meta property="og:title" content="나만의 힐링유형 찾기">  
     <meta property="og:description" content="당신의 휴식 유형은? 테스트로 확인해보세요!">  
     <meta property="og:image" content="https://i.imgur.com/DEjXLLq.png">  
-    <meta property="og:url" content="https://vercel앱주소.vercel.app">  
-    <meta property="og:type" content="website">  
+    <meta property="og:url" content="https://vercel앱주소.vercel.app"> <meta property="og:type" content="website">  
       
     <style>  
         body {    
@@ -256,12 +255,12 @@
         const results = {    
             'A': {     
                 name: "🛌 매일 누워있고 싶어!<br><span class=\"purple-text\">&lt;이불 돌돌말이&gt;</span>",     
-                description: "축하합니다! 햅삐님은 집에서도 충분히 행복을 누리는 법을 알고 계시군요! 햅삐님의 행복은 외부의 자극을 피해 혼자만의 여유를 가지는 것으로부터 시작됩니다.<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
+                description: "축하합니다! 햅삐님은 집에서도 충분히 행복을 누리는 법을 알고 계시는군요! 햅삐님의 행복은 외부의 자극을 피해 혼자만의 여유를 가지는 것으로부터 시작됩니다.<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🛌',    
                 curation: []     
             },    
             'B': {     
-                name: "🚀 일단 옷부터 입자!<br><span class=\"purple-text\">&lt;도파민 헌터&gt;</span>",     
+                name: "🚀 일단 밖으로 나가자!<br><span class=\"purple-text\">&lt;도파민 헌터&gt;</span>",     
                 description: "햅삐님은 몸을 움직이고 사람을 만날 때 쉰다고 느끼시는군요! 새로운 카페, 처음 보는 사람들과의 만남까지- 집 밖으로 나가면 설레는 것들이 가득!!<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🗺️',    
                 curation: []    
@@ -273,7 +272,7 @@
                 curation: []    
             },    
             'D': {     
-                name: "✨ 호기심 풀충<br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>",     
+                name: "✨ 트렌드 수집가 <br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>",     
                 description: "햅삐님은 팝업스토어, 신상맛집을 다녀오고 직접 경험하는 데서 큰 즐거움을 느끼시는군요! 햅씨와 매우 비슷한 스타일!!(에디터로 탐나는 인재군요ㅎㅎ)<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🎧',    
                 curation: []    
@@ -287,7 +286,7 @@
             document.getElementById('intro-page').style.display = 'none';    
             document.getElementById('quiz-page').style.display = 'block';    
             currentQuestionIndex = 0;    
-            scores = { 'A': 0, 'B': 0, 'C': '0', 'D': 0 }; // scores 초기화 시 'C'는 0으로 변경
+            scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0 }; 
             updateBackButtonVisibility();    
             displayQuestion();    
         }    
@@ -333,9 +332,9 @@
             if (currentQuestionIndex > 0) {    
                 const currentOptions = questions[currentQuestionIndex - 1].options;    
                 currentOptions.forEach(option => {    
-                    if (scores[option.type] > 0) {    
+                    if (scores[option.type] > 0 && typeof scores[option.type] === 'number') {    
                         scores[option.type]--;    
-                    }    
+                    }
                 });    
                     
                 currentQuestionIndex--;    
@@ -389,24 +388,57 @@
             console.log("내 스타일 선물받기 클릭: ", subscribeURL);    
         }    
     
+        // 🛠️ Web Share API 실패 시 호출될 대체 함수 (클립보드 복사)
+        function fallbackCopy(text, url) {
+            const fullText = `${text}\n\n${url}`;
+            
+            navigator.clipboard.writeText(fullText)
+                .then(() => {
+                    // 사용자에게 클립보드에 복사되었음을 알림
+                    alert(`[친구에게 알려주기] 문구와 주소가 클립보드에 복사되었습니다!\n(카카오톡, 문자 등에 붙여넣기 하세요.)`);
+                })
+                .catch(err => {
+                    // 복사 자체가 실패했을 경우 대비
+                    alert('클립보드 복사에 실패했습니다. 주소를 직접 복사해주세요: ' + url);
+                    console.error('클립보드 복사 실패:', err);
+                });
+        }
+
+        // 🟢 공유 기능 수정: Web Share API(OS 공유 창) 우선 시도 🟢
         function shareResult() {    
             const resultKey = determineResult();    
-            const plainResultName = results[resultKey].name.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<br>/g, ' ').replace(/<[^>]*>/g, '').replace(/이불 돌돌말이|도파민 헌터|파워J 갓생러|오감만족 큐레이터/, (match) => match);    
+            // HTML 태그 제거 및 결과 이름 정리
+            const plainResultName = results[resultKey].name
+                .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+                .replace(/<br>/g, ' ')
+                .replace(/<[^>]*>/g, '')
+                .trim();
                 
-            const shareURL = "https://maily.so/happci";     
-    
-            const shareText = `저는 ${plainResultName}입니다!😆 당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요! ${shareURL}`;    
-    
+            const shareURL = "https://vercel앱주소.vercel.app"; // OG URL과 동일한 주소 사용
+            
+            // 공유할 문구
+            const shareText = `저는 ${plainResultName}입니다!😆\n당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요!`;    
+
+            // 1. Web Share API 시도 (OS 기본 공유 창 띄우기)
             if (navigator.share) {    
                 navigator.share({    
-                    title: '나의 자휴찾기 테스트 결과',    
+                    title: '나의 자휴찾기 테스트 결과',
                     text: shareText,    
                     url: shareURL,    
-                }).catch((error) => console.log('Sharing failed', error));    
-            } else {    
-                navigator.clipboard.writeText(shareText);    
-                alert(`[친구에게 알려주기] 문구가 클립보드에 복사되었습니다!\n\n${shareText}`);    
-            }    
+                }).then(() => {
+                    console.log('Web Share API 공유 성공');
+                }).catch((error) => {
+                    // Web Share API가 사용자가 취소하거나, 오류가 발생하면 (주로 여기서 문제가 발생)
+                    console.error('Web Share API 공유 실패 또는 취소됨:', error);
+                    // 2단계: 클립보드 복사로 대체
+                    fallbackCopy(shareText, shareURL);
+                });
+            } 
+            // 2. Web Share API 미지원 시 (PC 환경 등) 클립보드 복사로 대체
+            else {    
+                console.log('navigator.share 미지원으로 클립보드 복사로 대체');
+                fallbackCopy(shareText, shareURL);
+            }
         }    
     
         function restartQuiz() {    
@@ -416,4 +448,3 @@
     </script>    
 </body>    
 </html>
-
