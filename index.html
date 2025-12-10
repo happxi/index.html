@@ -405,35 +405,34 @@
                 });
         }
 
-        // 🟢 최종 공유 기능 (별명만 추출하도록 로직 변경 및 인앱 탈출 로직 포함) 🟢
+        // 🟢 최종 공유 기능 (인앱 브라우저 안정화 버전) 🟢
         function shareResult() {    
             const resultKey = determineResult();    
             
-            // 🚩 수정: results[resultKey].name에서 '<'와 '>'로 감싸진 별명만 추출
+            // 🚩 별명 추출 로직 유지
             const resultNameHtml = results[resultKey].name;
-            
-            // 정규 표현식을 사용하여 '&lt;'와 '&gt;'로 감싸진 텍스트 (&lt;별명&gt;)만 추출합니다.
             const match = resultNameHtml.match(/&lt;([^&]+)&gt;/);
-            let nickname = "자휴찾기 유형"; // 기본값
+            let nickname = "자휴찾기 유형"; 
             if (match && match[1]) {
-                // 매치된 별명 (예: '이불 돌돌말이')을 가져옵니다.
                 nickname = match[1]; 
             }
                 
             // 🟢 사용자의 실제 Vercel 주소 반영 완료 🟢
             const shareURL = "https://index-html-zak5.vercel.app/"; 
-            
-            // 공유할 문구: 별명만 사용합니다.
             const shareText = `저는 <${nickname}>입니다!😆\n당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요!`;    
             
-            // --- 1. 인앱 브라우저 체크 및 탈출 로직 (카톡 인앱 문제 해결) ---
-            const isKakaoInApp = navigator.userAgent.includes('KAKAOTALK');
+            // --- 1. 인앱 브라우저 체크 및 탈출 로직 (안정화) ---
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isKakaoInApp = userAgent.includes('kakaotalk');
             
             if (isKakaoInApp) {
-                // 인앱 브라우저일 경우: 외부 브라우저로 리디렉션 유도
-                alert('✨ 더 다양한 앱으로 공유하기 위해 외부 브라우저로 이동합니다.');
-                // 외부 브라우저를 열게 합니다.
-                window.open(shareURL, '_blank'); 
+                // 카카오톡 인앱 브라우저에서 외부 브라우저를 열도록 URL 스킴을 사용하거나, 
+                // window.location.href를 사용해 현재 창을 덮어쓰도록 유도
+                
+                // **alert 제거: alert이 window.open을 막는 경우가 많기 때문**
+                
+                // 외부 브라우저로 리디렉션하여 다시 페이지를 열도록 유도
+                window.location.href = shareURL; 
                 return; // 여기서 공유 로직 중단
             }
             // --- 인앱 브라우저 체크 로직 끝 ---
