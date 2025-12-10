@@ -8,7 +8,8 @@
     <meta property="og:title" content="나만의 힐링유형 찾기">  
     <meta property="og:description" content="당신의 휴식 유형은? 테스트로 확인해보세요!">  
     <meta property="og:image" content="https://i.imgur.com/DEjXLLq.png">  
-    <meta property="og:url" content="https://vercel앱주소.vercel.app"> <meta property="og:type" content="website">  
+    <meta property="og:url" content="https://vercel앱주소.vercel.app"> 
+    <meta property="og:type" content="website">  
       
     <style>  
         body {    
@@ -260,7 +261,7 @@
                 curation: []     
             },    
             'B': {     
-                name: "🚀 일단 밖으로 나가자!<br><span class=\"purple-text\">&lt;도파민 헌터&gt;</span>",     
+                name: "🚀 일단 옷부터 입자!<br><span class=\"purple-text\">&lt;도파민 헌터&gt;</span>",     
                 description: "햅삐님은 몸을 움직이고 사람을 만날 때 쉰다고 느끼시는군요! 새로운 카페, 처음 보는 사람들과의 만남까지- 집 밖으로 나가면 설레는 것들이 가득!!<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🗺️',    
                 curation: []    
@@ -272,7 +273,7 @@
                 curation: []    
             },    
             'D': {     
-                name: "✨ 트렌드 수집가 <br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>",     
+                name: "✨ 트렌드 수집가<br><span class=\"purple-text\">&lt;오감만족 큐레이터&gt;</span>", // 🟢 '호기심 풀충' -> '트렌드 수집가'로 수정 완료 🟢
                 description: "햅삐님은 팝업스토어, 신상맛집을 다녀오고 직접 경험하는 데서 큰 즐거움을 느끼시는군요! 햅씨와 매우 비슷한 스타일!!(에디터로 탐나는 인재군요ㅎㅎ)<br><br>앞으로 햅삐님이 딱 좋아하실만한<br>자휴레터를 보내드릴게요!",    
                 illustration: '🎧',    
                 curation: []    
@@ -404,7 +405,7 @@
                 });
         }
 
-        // 🟢 공유 기능 수정: Web Share API(OS 공유 창) 우선 시도 🟢
+        // 🟢 최종 공유 기능 (인앱 탈출 로직 및 Web Share API 우선) 🟢
         function shareResult() {    
             const resultKey = determineResult();    
             // HTML 태그 제거 및 결과 이름 정리
@@ -419,7 +420,19 @@
             // 공유할 문구
             const shareText = `저는 ${plainResultName}입니다!😆\n당신의 휴식 유형이 궁금하다면 자휴레터 테스트에 참여해보세요!`;    
 
-            // 1. Web Share API 시도 (OS 기본 공유 창 띄우기)
+            // --- 1. 인앱 브라우저 체크 및 탈출 로직 (카톡 인앱 문제 해결) ---
+            const isKakaoInApp = navigator.userAgent.includes('KAKAOTALK');
+            
+            if (isKakaoInApp) {
+                // 인앱 브라우저일 경우: 외부 브라우저로 리디렉션 유도
+                alert('✨ 더 다양한 앱으로 공유하기 위해 외부 브라우저로 이동합니다.');
+                // 외부 브라우저를 열게 합니다.
+                window.open(shareURL, '_blank'); 
+                return; // 여기서 공유 로직 중단
+            }
+            // --- 인앱 브라우저 체크 로직 끝 ---
+
+            // 2. Web Share API 시도 (OS 기본 공유 창 띄우기)
             if (navigator.share) {    
                 navigator.share({    
                     title: '나의 자휴찾기 테스트 결과',
@@ -428,13 +441,13 @@
                 }).then(() => {
                     console.log('Web Share API 공유 성공');
                 }).catch((error) => {
-                    // Web Share API가 사용자가 취소하거나, 오류가 발생하면 (주로 여기서 문제가 발생)
+                    // 사용자가 취소하거나, 오류가 발생하면
                     console.error('Web Share API 공유 실패 또는 취소됨:', error);
-                    // 2단계: 클립보드 복사로 대체
+                    // 3단계: 클립보드 복사로 대체
                     fallbackCopy(shareText, shareURL);
                 });
             } 
-            // 2. Web Share API 미지원 시 (PC 환경 등) 클립보드 복사로 대체
+            // 3. Web Share API 미지원 시 (PC 환경 등) 클립보드 복사로 대체
             else {    
                 console.log('navigator.share 미지원으로 클립보드 복사로 대체');
                 fallbackCopy(shareText, shareURL);
